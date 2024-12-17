@@ -212,150 +212,153 @@ function Dashboard() {
 
     return (
         <>
-            <Navbar style={{ backgroundColor: 'black' }} variant="dark">
-                <Container>
-                    <Navbar.Brand href="#home">Computer Shop</Navbar.Brand>
-                    <Nav className="me-auto">
-                        <Nav.Link href="#users">Users</Nav.Link>
-                        <Nav.Link href="#departments">Top Up Center</Nav.Link>
-                        <Nav.Link href="#courses">DownLoad</Nav.Link>
-                    </Nav>
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="ms-auto">
-                            <NavDropdown title={user ? user.username : 'Dropdown'} id="basic-nav-dropdown" align="end">
-                                <NavDropdown.Item href="#">Profile</NavDropdown.Item>
-                                <NavDropdown.Item href="#">Settings</NavDropdown.Item>
-                                <NavDropdown.Item href="#" onClick={handleLogout}>Logout</NavDropdown.Item>
-                            </NavDropdown>
+            {/* Main Wrapper with Background Color */}
+            <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
+                <Navbar style={{ backgroundColor: 'black' }} variant="dark">
+                    <Container>
+                        <Navbar.Brand href="#home">Computer Shop</Navbar.Brand>
+                        <Nav className="me-auto">
+                            <Nav.Link href="#users">Users</Nav.Link>
+                            <Nav.Link href="#departments">Top Up Center</Nav.Link>
+                            <Nav.Link href="#courses">DownLoad</Nav.Link>
                         </Nav>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
-
-            <br />
-
-            <div className='container' style={{ backgroundColor: '#f8f9fa' }}>
-                <div className='col-12'>
-                    <Button variant="btn btn-success mb-2 float-end btn-sm me-2" onClick={() => setShowCreate(true)}>Create User</Button>
-                </div>
-
-                <table className='table table-bordered'>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Username</th>
-                            <th>Fullname</th>
-                            <th><center>Action</center></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.length > 0 && users.map((row_users) => (
-                            <tr key={row_users.user_id}>
-                                <td>{row_users.user_id}</td>
-                                <td>{row_users.username}</td>
-                                <td>{row_users.fullname}</td>
-                                <td>
-                                    <center>
-                                        <Button variant='secondary' size='sm' onClick={() => handleShowRead(row_users)}>Read</Button>{' '}
-                                        <Button variant='primary' size='sm' onClick={() => handleShowUpdate(row_users)}>Update</Button>{' '}
-                                        <Button variant='danger' size='sm' onClick={() => deleteUser(row_users.user_id)}>Delete</Button>
-                                    </center>
-                                </td>
+                        <Navbar.Collapse id="basic-navbar-nav">
+                            <Nav className="ms-auto">
+                                <NavDropdown title={user ? user.username : 'Dropdown'} id="basic-nav-dropdown" align="end">
+                                    <NavDropdown.Item href="#">Profile</NavDropdown.Item>
+                                    <NavDropdown.Item href="#">Settings</NavDropdown.Item>
+                                    <NavDropdown.Item href="#" onClick={handleLogout}>Logout</NavDropdown.Item>
+                                </NavDropdown>
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Container>
+                </Navbar>
+    
+                <br />
+    
+                <div className='container'>
+                    <div className='col-12'>
+                        <Button variant="btn btn-success mb-2 float-end btn-sm me-2" onClick={() => setShowCreate(true)}>Create User</Button>
+                    </div>
+    
+                    <table className='table table-bordered'>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Fullname</th>
+                                <th><center>Action</center></th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {users.length > 0 && users.map((row_users) => (
+                                <tr key={row_users.user_id}>
+                                    <td>{row_users.user_id}</td>
+                                    <td>{row_users.username}</td>
+                                    <td>{row_users.fullname}</td>
+                                    <td>
+                                        <center>
+                                            <Button variant='secondary' size='sm' onClick={() => handleShowRead(row_users)}>Read</Button>{' '}
+                                            <Button variant='primary' size='sm' onClick={() => handleShowUpdate(row_users)}>Update</Button>{' '}
+                                            <Button variant='danger' size='sm' onClick={() => deleteUser(row_users.user_id)}>Delete</Button>
+                                        </center>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+    
+                {/* Create User Modal */}
+                <Modal show={showCreate} onHide={() => setShowCreate(false)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Create User</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form onSubmit={createUser}>
+                            <Row>
+                                <Col>
+                                    <Form.Group controlId="Name">
+                                        <Form.Label>Fullname</Form.Label>
+                                        <Form.Control type="text" value={fullname} onChange={(e) => setFullname(e.target.value)} required />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form.Group controlId="Username">
+                                        <Form.Label>Username</Form.Label>
+                                        <Form.Control type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form.Group controlId="Password">
+                                        <Form.Label>Password</Form.Label>
+                                        <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <br />
+                            <Button variant="success" type="submit">Create User</Button>
+                        </Form>
+                    </Modal.Body>
+                </Modal>
+    
+                {/* Update User Modal */}
+                <Modal show={showUpdate} onHide={() => setShowUpdate(false)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Update User</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form onSubmit={updateUser}>
+                            <Row>
+                                <Col>
+                                    <Form.Group controlId="Name">
+                                        <Form.Label>Fullname</Form.Label>
+                                        <Form.Control type="text" value={fullname} onChange={(e) => setFullname(e.target.value)} required />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form.Group controlId="Username">
+                                        <Form.Label>Username</Form.Label>
+                                        <Form.Control type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form.Group controlId="Password">
+                                        <Form.Label>Password</Form.Label>
+                                        <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <br />
+                            <Button variant="primary" type="submit">Update User</Button>
+                        </Form>
+                    </Modal.Body>
+                </Modal>
+    
+                {/* Read User Modal */}
+                <Modal show={showRead} onHide={() => setShowRead(false)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>User Details</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {selectedUser && (
+                            <>
+                                <p><strong>ID:</strong> {selectedUser.user_id}</p>
+                                <p><strong>Username:</strong> {selectedUser.username}</p>
+                                <p><strong>Fullname:</strong> {selectedUser.fullname}</p>
+                            </>
+                        )}
+                    </Modal.Body>
+                </Modal>
             </div>
-
-            {/* Create User Modal */}
-            <Modal show={showCreate} onHide={() => setShowCreate(false)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Create User</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form onSubmit={createUser}>
-                        <Row>
-                            <Col>
-                                <Form.Group controlId="Name">
-                                    <Form.Label>Fullname</Form.Label>
-                                    <Form.Control type="text" value={fullname} onChange={(e) => setFullname(e.target.value)} required />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Form.Group controlId="Username">
-                                    <Form.Label>Username</Form.Label>
-                                    <Form.Control type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Form.Group controlId="Password">
-                                    <Form.Label>Password</Form.Label>
-                                    <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <br />
-                        <Button variant="success" type="submit">Create User</Button>
-                    </Form>
-                </Modal.Body>
-            </Modal>
-
-            {/* Update User Modal */}
-            <Modal show={showUpdate} onHide={() => setShowUpdate(false)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Update User</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form onSubmit={updateUser}>
-                        <Row>
-                            <Col>
-                                <Form.Group controlId="Name">
-                                    <Form.Label>Fullname</Form.Label>
-                                    <Form.Control type="text" value={fullname} onChange={(e) => setFullname(e.target.value)} required />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Form.Group controlId="Username">
-                                    <Form.Label>Username</Form.Label>
-                                    <Form.Control type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Form.Group controlId="Password">
-                                    <Form.Label>Password</Form.Label>
-                                    <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <br />
-                        <Button variant="primary" type="submit">Update User</Button>
-                    </Form>
-                </Modal.Body>
-            </Modal>
-
-            {/* Read User Modal */}
-            <Modal show={showRead} onHide={() => setShowRead(false)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>User Details</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {selectedUser && (
-                        <>
-                            <p><strong>ID:</strong> {selectedUser.user_id}</p>
-                            <p><strong>Username:</strong> {selectedUser.username}</p>
-                            <p><strong>Fullname:</strong> {selectedUser.fullname}</p>
-                        </>
-                    )}
-                </Modal.Body>
-            </Modal>
         </>
     );
 }
