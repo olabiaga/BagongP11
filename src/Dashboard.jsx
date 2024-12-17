@@ -234,7 +234,7 @@ function Dashboard() {
 
             <br />
 
-            <div className='container' style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }}>
+            <div className='container' style={{ backgroundColor: '#f8f9fa' }}>
                 <div className='col-12'>
                     <Button variant="btn btn-success mb-2 float-end btn-sm me-2" onClick={() => setShowCreate(true)}>Create User</Button>
                 </div>
@@ -298,7 +298,8 @@ function Dashboard() {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Button variant="primary" type="submit">Create</Button>
+                        <br />
+                        <Button variant="success" type="submit">Create User</Button>
                     </Form>
                 </Modal.Body>
             </Modal>
@@ -329,12 +330,13 @@ function Dashboard() {
                         <Row>
                             <Col>
                                 <Form.Group controlId="Password">
-                                    <Form.Label>Password (leave blank to keep unchanged)</Form.Label>
+                                    <Form.Label>Password</Form.Label>
                                     <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Button variant="primary" type="submit">Update</Button>
+                        <br />
+                        <Button variant="primary" type="submit">Update User</Button>
                     </Form>
                 </Modal.Body>
             </Modal>
@@ -345,8 +347,13 @@ function Dashboard() {
                     <Modal.Title>User Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p><strong>Username:</strong> {selectedUser?.username}</p>
-                    <p><strong>Fullname:</strong> {selectedUser?.fullname}</p>
+                    {selectedUser && (
+                        <>
+                            <p><strong>ID:</strong> {selectedUser.user_id}</p>
+                            <p><strong>Username:</strong> {selectedUser.username}</p>
+                            <p><strong>Fullname:</strong> {selectedUser.fullname}</p>
+                        </>
+                    )}
                 </Modal.Body>
             </Modal>
         </>
