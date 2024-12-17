@@ -214,7 +214,7 @@ function Dashboard() {
         <>
             <Navbar bg="success" data-bs-theme="dark">
                 <Container>
-                    <Navbar.Brand href="#home">Point Blank Shop</Navbar.Brand>
+                    <Navbar.Brand href="#home">Computer Shop</Navbar.Brand>
                     <Nav className="me-auto">
                         <Nav.Link href="#users">Users</Nav.Link>
                         <Nav.Link href="#departments">Top Up Center</Nav.Link>
