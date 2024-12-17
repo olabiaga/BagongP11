@@ -4,35 +4,20 @@ import axios from 'axios';
 
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
-import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
-import Modal from 'react-bootstrap/Modal';
 
 import { API_ENDPOINT } from './Api';
 
 function Dashboard() {
     const [user, setUser] = useState(null);
     const [users, setUsers] = useState([]);
-    const [showCreate, setShowCreate] = useState(false);
-    const [showUpdate, setShowUpdate] = useState(false);
-    const [showRead, setShowRead] = useState(false);
-    const [fullname, setFullname] = useState("");
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [selectedUser, setSelectedUser] = useState(null);
-
     const navigate = useNavigate();
 
     const getToken = () => {
         const storedToken = localStorage.getItem('token');
-        if (!storedToken) return null;
-
         try {
             const parsed = JSON.parse(storedToken);
             return parsed?.data?.token || parsed.token || storedToken;
@@ -46,9 +31,7 @@ function Dashboard() {
             try {
                 const token = getToken();
                 if (!token) throw new Error('No token found');
-
-                const decodedToken = jwtDecode(token);
-                setUser(decodedToken);
+                setUser(token); // Mocked for now
             } catch (error) {
                 console.error('Error decoding token:', error);
                 navigate("/login");
@@ -77,12 +60,8 @@ function Dashboard() {
     }, []);
 
     const handleLogout = () => {
-        try {
-            localStorage.removeItem('token');
-            navigate("/login");
-        } catch (error) {
-            console.error('Logout failed', error);
-        }
+        localStorage.removeItem('token');
+        navigate("/login");
     };
 
     const deleteUser = async (user_id) => {
@@ -91,85 +70,32 @@ function Dashboard() {
             text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#4CAF50',
-            cancelButtonColor: '#FF7043',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => result.isConfirmed);
 
         if (!isConfirm) return;
 
         try {
-            const headers = getHeaders();
-            await axios.delete(`${API_ENDPOINT}/user/${user_id}`, { headers });
-
-            Swal.fire({
-                icon: "success",
-                text: "Successfully Deleted"
-            });
-
+            await axios.delete(`${API_ENDPOINT}/user/${user_id}`, { headers: getHeaders() });
             setUsers(users.filter(user => user.user_id !== user_id));
+            Swal.fire('Deleted!', 'User has been deleted.', 'success');
         } catch (error) {
-            const errorMessage = error.response
-                ? error.response.data?.message || 'Failed to delete user. Please try again.'
-                : error.message || 'An unexpected error occurred.';
-
-            Swal.fire({
-                text: errorMessage,
-                icon: "error"
-            });
-        }
-    };
-
-    const createUser = async (e) => {
-        e.preventDefault();
-
-        if (!fullname || !username || !password) {
-            Swal.fire({
-                icon: "warning",
-                text: "All fields are required."
-            });
-            return;
-        }
-
-        try {
-            const { data } = await axios.post(`${API_ENDPOINT}/user`, {
-                fullname,
-                username,
-                password
-            }, { headers: getHeaders() });
-
-            Swal.fire({
-                icon: "success",
-                text: data.message
-            });
-
-            setFullname("");
-            setUsername("");
-            setPassword("");
-            setUsers([...users, data.newUser]);
-            setShowCreate(false);
-        } catch (error) {
-            const errorMessage = error.response
-                ? error.response.data?.message || 'Failed to create user. Please try again.'
-                : error.message || 'An unexpected error occurred.';
-
-            Swal.fire({
-                text: errorMessage,
-                icon: "error"
-            });
+            Swal.fire('Error!', 'Failed to delete user.', 'error');
         }
     };
 
     return (
         <>
             {/* Navbar */}
-            <Navbar style={{ backgroundColor: 'Black' }} variant="dark">
+            <Navbar variant="dark" style={{ backgroundColor: '#222' }}>
                 <Container>
-                    <Navbar.Brand href="#home">Computer Shop</Navbar.Brand>
+                    <Navbar.Brand style={{ color: '#fff' }}>Point Blank Shop</Navbar.Brand>
                     <Nav className="me-auto">
-                        <Nav.Link href="#users">Bantay</Nav.Link>
-                        <Nav.Link href="#departments">Teller</Nav.Link>
-                        <Nav.Link href="#courses">BastaAno</Nav.Link>
+                        <Nav.Link style={{ color: '#ddd' }} href="#users">Users</Nav.Link>
+                        <Nav.Link style={{ color: '#ddd' }} href="#departments">Top Up Center</Nav.Link>
+                        <Nav.Link style={{ color: '#ddd' }} href="#courses">Download</Nav.Link>
                     </Nav>
                     <Nav className="ms-auto">
                         <NavDropdown title={user ? user.username : 'Menu'} align="end">
@@ -179,14 +105,15 @@ function Dashboard() {
                 </Container>
             </Navbar>
 
-            <div className='container mt-4' style={{ backgroundColor: '#2f2f2f', color: 'white' }}> {/* Light Black Background */}
+            {/* Main Content */}
+            <div className='container mt-4' style={{ backgroundColor: '#121212', color: '#ddd', padding: '20px', borderRadius: '8px' }}>
                 <div className='d-flex justify-content-end mb-2'>
-                    <Button variant="success" onClick={() => setShowCreate(true)}>Create User</Button>
+                    <Button variant="success" onClick={() => console.log('Create User')}>Create User</Button>
                 </div>
 
                 {/* User Table */}
-                <table className='table table-bordered text-center' style={{ backgroundColor: '#444444', color: 'white' }}> {/* Table Background Color */}
-                    <thead style={{ backgroundColor: '#666666' }}>
+                <table className='table table-dark table-bordered text-center'>
+                    <thead>
                         <tr>
                             <th>ID</th>
                             <th>Username</th>
@@ -202,8 +129,8 @@ function Dashboard() {
                                     <td>{row_users.username}</td>
                                     <td>{row_users.fullname}</td>
                                     <td>
-                                        <Button variant="info" size="sm" onClick={() => setShowRead(true)}>Read</Button>{' '}
-                                        <Button variant="warning" size="sm">Update</Button>{' '}
+                                        <Button variant="info" size="sm" className="me-2">Read</Button>
+                                        <Button variant="warning" size="sm" className="me-2">Update</Button>
                                         <Button variant="danger" size="sm" onClick={() => deleteUser(row_users.user_id)}>Delete</Button>
                                     </td>
                                 </tr>
@@ -220,5 +147,5 @@ function Dashboard() {
     );
 }
 
-
 export default Dashboard;
+  
