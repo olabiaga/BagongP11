@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 
+
 // Importing components
 import Dashboard from './Dashboard';
 import Login from './Login';
