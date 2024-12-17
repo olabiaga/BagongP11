@@ -213,7 +213,7 @@ function Dashboard() {
     return (
         <>
             {/* Main Wrapper with Background Color */}
-            <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
+            <div style={{ backgroundColor: '#444', minHeight: '100vh' }}>
                 <Navbar style={{ backgroundColor: 'black' }} variant="dark">
                     <Container>
                         <Navbar.Brand href="#home">Computer Shop</Navbar.Brand>
