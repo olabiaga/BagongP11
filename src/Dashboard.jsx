@@ -10,7 +10,7 @@ import Col from 'react-bootstrap/Col';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
 import Modal from 'react-bootstrap/Modal';
 
@@ -212,7 +212,7 @@ function Dashboard() {
 
     return (
         <>
-            <Navbar bg="success" data-bs-theme="dark">
+            <Navbar style={{ backgroundColor: 'black' }} variant="dark">
                 <Container>
                     <Navbar.Brand href="#home">Computer Shop</Navbar.Brand>
                     <Nav className="me-auto">
@@ -234,7 +234,7 @@ function Dashboard() {
 
             <br />
 
-            <div className='container'>
+            <div className='container' style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }}>
                 <div className='col-12'>
                     <Button variant="btn btn-success mb-2 float-end btn-sm me-2" onClick={() => setShowCreate(true)}>Create User</Button>
                 </div>
@@ -298,7 +298,7 @@ function Dashboard() {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Button variant="success" type="submit" className="mt-3">Save</Button>
+                        <Button variant="primary" type="submit">Create</Button>
                     </Form>
                 </Modal.Body>
             </Modal>
@@ -329,12 +329,12 @@ function Dashboard() {
                         <Row>
                             <Col>
                                 <Form.Group controlId="Password">
-                                    <Form.Label>Password</Form.Label>
-                                    <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Leave blank to keep current password" />
+                                    <Form.Label>Password (leave blank to keep unchanged)</Form.Label>
+                                    <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Button variant="primary" type="submit" className="mt-3">Update</Button>
+                        <Button variant="primary" type="submit">Update</Button>
                     </Form>
                 </Modal.Body>
             </Modal>
@@ -342,22 +342,12 @@ function Dashboard() {
             {/* Read User Modal */}
             <Modal show={showRead} onHide={() => setShowRead(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Row Details</Modal.Title>
+                    <Modal.Title>User Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {selectedUser ? (
-                        <div>
-                            <p><strong>ID:</strong> {selectedUser.user_id}</p>
-                            <p><strong>Fullname:</strong> {selectedUser.fullname}</p>
-                            <p><strong>Username:</strong> {selectedUser.username}</p>
-                        </div>
-                    ) : (
-                        <p>No data available</p>
-                    )}
+                    <p><strong>Username:</strong> {selectedUser?.username}</p>
+                    <p><strong>Fullname:</strong> {selectedUser?.fullname}</p>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowRead(false)}>Close</Button>
-                </Modal.Footer>
             </Modal>
         </>
     );
